@@ -64,6 +64,9 @@ public class App extends Application
 	private HashMap<Integer, TreeTableNode> lookupTable = 
 		new HashMap<Integer, TreeTableNode>();
 	
+	private int numColumns = 10;
+	private int numRows = 10;
+	
 	/**
 	 * 
 	 * @param args
@@ -79,10 +82,14 @@ public class App extends Application
 	@Override
 	public void start(Stage primaryStage) 
 	{
+/*		
 		createModel();
 		createMatrix();
+*/		
 
 		Pane root = new Pane();
+		
+/*		
 		int border = 5;
 
 		int previousLevel = -1;
@@ -134,9 +141,9 @@ public class App extends Application
 						}	
 					}
 				}
-			}
+			}			
 			
-
+			
 						
 			float width = columnInterval * 0.75f; 
 			float height = ((columnInterval > rowInterval) ? rowInterval : columnInterval) * .55f;
@@ -231,6 +238,67 @@ public class App extends Application
 			}
 		}
 
+*/
+		float columnInterval = sceneWidth / (numColumns + 1);
+		float rowInterval = sceneHeight / (numRows + 1);
+		
+		for (int i = 0; i <= numColumns; i++)
+		{
+			Group lineGroup = null;
+			
+			Line line = new Line(	
+				columnInterval * (float)i,
+				0,
+				columnInterval * (float)i,
+				sceneHeight);		
+				
+			line.setStrokeWidth(1.0f);
+
+			lineGroup = new Group(line);
+				
+			root.getChildren().add(lineGroup);			
+		}
+		
+		for (int i = 0; i <= numRows; i++)
+		{
+			Group lineGroup = null;
+			
+			Line line = new Line(	
+				0, 
+				rowInterval * (float)i,
+				sceneWidth,
+				rowInterval * (float)i);		
+				
+			line.setStrokeWidth(1.0f);
+
+			lineGroup = new Group(line);
+				
+			root.getChildren().add(lineGroup);			
+		}		
+		
+/*		
+		for (int j = 0; j < numRows; j++)
+		{
+			Group lineGroup = null;
+				
+			Line line = new Line(					
+				x + width / 2.0f, 
+				y, 
+				parentLocation.getX() + width / 2.0f,
+				parentLocation.getY() + height);		
+				
+			line.setStrokeWidth(1.0f);
+
+			lineGroup = new Group(line);
+				
+			root.getChildren().add(lineGroup);
+		}
+*/		
+		
+
+		
+
+		
 		Scene scene = new Scene(root, sceneWidth, sceneHeight);
 
 		primaryStage.setTitle("Treeviewer");
@@ -263,6 +331,7 @@ public class App extends Application
 	/**
 	 * 
 	 */
+/*	
 	private void createMatrix()
 	{
 		for (TreeTableNode node : treeTableNodes)
@@ -278,10 +347,12 @@ public class App extends Application
 			parent.put(node.getChildId(), 1);			
 		}
 	}
+*/	
 	
 	/**
 	 * 
 	 */
+/*	
 	private void createModel()
 	{
 		ObjectMapper mapper = new ObjectMapper();
@@ -334,4 +405,5 @@ public class App extends Application
 		rowInterval = sceneHeight / (numLevels + 1);
 		columnInterval = sceneWidth / (maxColumns + 1);
 	}	
+*/	
 }
