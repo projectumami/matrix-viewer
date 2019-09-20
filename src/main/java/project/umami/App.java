@@ -64,8 +64,8 @@ public class App extends Application
 	private HashMap<Integer, TreeTableNode> lookupTable = 
 		new HashMap<Integer, TreeTableNode>();
 	
-	private int numColumns = 10;
-	private int numRows = 10;
+	private int numColumns = 20;
+	private int numRows = 20;
 	
 	/**
 	 * 
@@ -257,6 +257,21 @@ public class App extends Application
 			lineGroup = new Group(line);
 				
 			root.getChildren().add(lineGroup);			
+			
+			Group textGroup = null;
+			
+			Text text = new Text();
+			text.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 10));
+			text.setText(Integer.toString(i));
+			text.setX(columnInterval * (float)i + (columnInterval / 2.0f));
+			text.setY(rowInterval / 2.0f);
+			text.setFill(Color.BLACK);
+			textGroup = new Group(text);
+			
+			if (textGroup != null)
+			{
+				root.getChildren().add(textGroup);
+			}
 		}
 		
 		for (int i = 0; i <= numRows; i++)
@@ -274,6 +289,21 @@ public class App extends Application
 			lineGroup = new Group(line);
 				
 			root.getChildren().add(lineGroup);			
+			
+			Group textGroup = null;
+			
+			Text text = new Text();
+			text.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 10));
+			text.setText(Integer.toString(i));
+			text.setX(columnInterval / 2.0f);
+			text.setY(rowInterval * (float)i + (rowInterval / 2.0f));
+			text.setFill(Color.BLACK);
+			textGroup = new Group(text);
+			
+			if (textGroup != null)
+			{
+				root.getChildren().add(textGroup);
+			}
 		}		
 		
 /*		
