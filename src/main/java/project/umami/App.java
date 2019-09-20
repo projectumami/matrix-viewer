@@ -20,9 +20,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Set;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -34,7 +33,6 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
@@ -50,19 +48,16 @@ import javafx.stage.Stage;
 public class App extends Application 
 {
 	private static Scene scene;
-	private int sceneWidth = 1750;
-	private int sceneHeight = 1250;
-	private HashMap<Integer, LocationNode> locations = 
-		new HashMap<Integer, LocationNode>();
+	private int sceneWidth = 500;
+	private int sceneHeight = 500;
 	
-	private List<TreeTableNode> treeTableNodes = null;
+	private List<MatrixNode> matrixNodes = null;
+	
 	private float rowInterval = 0.0f;
 	private float columnInterval = 0.0f;
-	private HashMap<Integer, HashMap<Integer, Integer>> adjacencyMatrix =
-		new HashMap<Integer, HashMap<Integer, Integer>>();
 	
-	private HashMap<Integer, TreeTableNode> lookupTable = 
-		new HashMap<Integer, TreeTableNode>();
+	private LinkedHashMap<String, HashMap<String, String>> matrix =
+		new LinkedHashMap<String, HashMap<String, String>>();
 	
 	private int numColumns = 20;
 	private int numRows = 20;
@@ -82,10 +77,10 @@ public class App extends Application
 	@Override
 	public void start(Stage primaryStage) 
 	{
-/*		
+		
 		createModel();
-		createMatrix();
-*/		
+//		createMatrix();
+		
 
 		Pane root = new Pane();
 		
@@ -239,8 +234,8 @@ public class App extends Application
 		}
 
 */
-		float columnInterval = sceneWidth / (numColumns + 1);
-		float rowInterval = sceneHeight / (numRows + 1);
+		float columnInterval = sceneWidth / numColumns;
+		float rowInterval = sceneHeight / numRows;
 		
 		for (int i = 0; i <= numColumns; i++)
 		{
@@ -381,23 +376,28 @@ public class App extends Application
 	
 	/**
 	 * 
-	 */
-/*	
+	 */	
 	private void createModel()
 	{
 		ObjectMapper mapper = new ObjectMapper();
 		
 		try 
 		{
-			InputStream fileInputStream = new FileInputStream("C:\\ProjectUmami\\data\\tree.json");
-			treeTableNodes = Arrays.asList(mapper.readValue(fileInputStream, TreeTableNode[].class));
+			InputStream fileInputStream = new FileInputStream("C:\\ProjectUmami\\data\\matrix.json");
+			matrixNodes = Arrays.asList(mapper.readValue(fileInputStream, MatrixNode[].class));
 			fileInputStream.close();
 
-			for (TreeTableNode treeTableNode : treeTableNodes) 
+			for (MatrixNode matrixNode : matrixNodes) 
 			{
-				System.out.println(treeTableNode.toString());
+				System.out.println(matrixNode.toString());
 				
-				lookupTable.put(treeTableNode.getChildId(), treeTableNode);
+				if (matrix.get(matrixNode.getColumn()) == null)
+				{
+					matrix.put(matrixNode.getColumn(), new LinkedHashMap<String, String>());
+				}
+				
+				matrix.get(matrixNode.getColumn()).
+					put(matrixNode.getRow(), matrixNode.getData());
 			}
 		} 
 		catch (Exception e) 
@@ -405,35 +405,6 @@ public class App extends Application
 			e.printStackTrace();
 		}	
 		
-		int previousLevel = -1;
-		int numLevels = 0;
-		int maxColumns = 0;
 
-		int columns = 0;
-
-		for (TreeTableNode node : treeTableNodes) 
-		{
-			numLevels = node.getLevel();
-
-			if (previousLevel != numLevels) 
-			{
-				previousLevel = numLevels;
-
-				if (columns > maxColumns) 
-				{
-					maxColumns = columns;
-				}
-
-				columns = 0;
-			} 
-			else 
-			{
-				columns++;
-			}
-		}		
-		
-		rowInterval = sceneHeight / (numLevels + 1);
-		columnInterval = sceneWidth / (maxColumns + 1);
-	}	
-*/	
+	}		
 }
