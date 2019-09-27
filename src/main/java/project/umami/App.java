@@ -384,6 +384,8 @@ public class App extends Application
 		try 
 		{
 			InputStream fileInputStream = new FileInputStream("C:\\ProjectUmami\\data\\matrix.json");
+			
+/*			
 			matrixNodes = Arrays.asList(mapper.readValue(fileInputStream, MatrixNode[].class));
 			fileInputStream.close();
 
@@ -399,6 +401,7 @@ public class App extends Application
 				matrix.get(matrixNode.getColumn()).
 					put(matrixNode.getRow(), matrixNode.getData());
 			}
+*/			
 		} 
 		catch (Exception e) 
 		{
