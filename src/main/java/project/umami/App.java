@@ -22,6 +22,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -38,6 +39,7 @@ import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import project.umami.parser.MatrixNode;
 
 /**
  * Parse Tree visualization
@@ -301,6 +303,24 @@ public class App extends Application
 			}
 		}		
 		
+		
+/*		
+		for (Map.Entry<String, LinkedHashMap<String, Integer>> column : matrix.entrySet())
+		{
+			LinkedHashMap<String, Integer> rows = column.getValue();
+			
+			for (Map.Entry<String, Integer> row : rows.entrySet())
+			{ 
+				retVal.add(
+					new MatrixNode(
+						column.getKey(), 
+						row.getKey(), 
+						row.getValue()));
+			}			
+		}
+*/
+		
+//		if (matrix.get(key))
 /*		
 		for (int j = 0; j < numRows; j++)
 		{
@@ -384,8 +404,7 @@ public class App extends Application
 		try 
 		{
 			InputStream fileInputStream = new FileInputStream("C:\\ProjectUmami\\data\\matrix.json");
-			
-/*			
+						
 			matrixNodes = Arrays.asList(mapper.readValue(fileInputStream, MatrixNode[].class));
 			fileInputStream.close();
 
@@ -400,8 +419,7 @@ public class App extends Application
 				
 				matrix.get(matrixNode.getColumn()).
 					put(matrixNode.getRow(), matrixNode.getData());
-			}
-*/			
+			}			
 		} 
 		catch (Exception e) 
 		{
