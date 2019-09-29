@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -65,8 +66,8 @@ public class App extends Application
 	
 	private ArrayList<String> values = new ArrayList<String>();
 	
-	private int numColumns = 0; // 20;
-	private int numRows = 0; // 20;
+//	private int numColumns = 0; // 20;
+//	private int numRows = 0; // 20;
 	
 	/**
 	 * 
@@ -240,10 +241,10 @@ public class App extends Application
 		}
 
 */
-		float columnInterval = sceneWidth / numColumns;
-		float rowInterval = sceneHeight / numRows;
+		float columnInterval = sceneWidth / (values.size() + 1); // numColumns;
+		float rowInterval = sceneHeight / (values.size() + 1); // numRows;
 		
-		for (int i = 0; i <= numColumns; i++)
+		for (int i = 0; i <= values.size(); i++)
 		{
 			Group lineGroup = null;
 			
@@ -280,7 +281,7 @@ public class App extends Application
 			}
 		}
 		
-		for (int i = 0; i <= numRows; i++)
+		for (int i = 0; i <= values.size(); i++)
 		{
 			Group lineGroup = null;
 			
@@ -431,6 +432,11 @@ public class App extends Application
 					matrix.put(matrixNode.getColumn(), new LinkedHashMap<String, String>());
 				}
 				
+				if (matrix.get(matrixNode.getRow()) == null)
+				{
+					matrix.put(matrixNode.getRow(), new LinkedHashMap<String, String>());
+				}				
+				
 				matrix.get(matrixNode.getColumn()).
 					put(matrixNode.getRow(), matrixNode.getData());
 			}		
@@ -443,11 +449,12 @@ public class App extends Application
 	            Map.Entry item = (Map.Entry) iterator.next();
 
 	            values.add((String)item.getKey());
-//	            System.out.println("Key = " + item.getKey() + " Value = " + item.getValue());
+	            System.out.println("Key = " + item.getKey() + " Value = " + item.getValue());
 	        }		
 	        
-	        numRows = values.size();
-	        numColumns = values.size();
+	        Collections.sort(values);
+//	        numRows = values.size();
+//	        numColumns = values.size();
 		} 
 		catch (Exception e) 
 		{
