@@ -18,11 +18,14 @@ package project.umami;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -39,7 +42,6 @@ import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import project.umami.parser.MatrixNode;
 
 /**
  * Parse Tree visualization
@@ -61,8 +63,10 @@ public class App extends Application
 	private LinkedHashMap<String, HashMap<String, String>> matrix =
 		new LinkedHashMap<String, HashMap<String, String>>();
 	
-	private int numColumns = 20;
-	private int numRows = 20;
+	private ArrayList<String> values = new ArrayList<String>();
+	
+	private int numColumns = 0; // 20;
+	private int numRows = 0; // 20;
 	
 	/**
 	 * 
@@ -259,7 +263,12 @@ public class App extends Application
 			
 			Text text = new Text();
 			text.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 10));
-			text.setText(Integer.toString(i));
+			
+			if (i > 0)
+			{
+				text.setText(values.get(i - 1));
+			}
+			
 			text.setX(columnInterval * (float)i + (columnInterval / 2.0f));
 			text.setY(rowInterval / 2.0f);
 			text.setFill(Color.BLACK);
@@ -291,7 +300,12 @@ public class App extends Application
 			
 			Text text = new Text();
 			text.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 10));
-			text.setText(Integer.toString(i));
+			
+			if (i > 0)
+			{
+				text.setText(values.get(i - 1));
+			}
+			
 			text.setX(columnInterval / 2.0f);
 			text.setY(rowInterval * (float)i + (rowInterval / 2.0f));
 			text.setFill(Color.BLACK);
@@ -419,13 +433,25 @@ public class App extends Application
 				
 				matrix.get(matrixNode.getColumn()).
 					put(matrixNode.getRow(), matrixNode.getData());
-			}			
+			}		
+			
+	        Set set = matrix.entrySet();
+	        Iterator iterator = set.iterator();
+
+	        while (iterator.hasNext()) 
+	        {
+	            Map.Entry item = (Map.Entry) iterator.next();
+
+	            values.add((String)item.getKey());
+//	            System.out.println("Key = " + item.getKey() + " Value = " + item.getValue());
+	        }		
+	        
+	        numRows = values.size();
+	        numColumns = values.size();
 		} 
 		catch (Exception e) 
 		{
 			e.printStackTrace();
 		}	
-		
-
 	}		
 }
