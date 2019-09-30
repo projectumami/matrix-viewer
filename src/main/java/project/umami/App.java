@@ -58,8 +58,8 @@ public class App extends Application
 	
 	private List<MatrixNode> matrixNodes = null;
 	
-	private float rowInterval = 0.0f;
-	private float columnInterval = 0.0f;
+//	private float rowInterval = 0.0f;
+//	private float columnInterval = 0.0f;
 	
 	private LinkedHashMap<String, HashMap<String, String>> matrix =
 		new LinkedHashMap<String, HashMap<String, String>>();
@@ -316,7 +316,34 @@ public class App extends Application
 			{
 				root.getChildren().add(textGroup);
 			}
-		}		
+		}	
+		        
+		for (int column = 0; column < values.size(); column++)			
+		{
+			for (int row = 0; row < values.size(); row++)
+			{			
+				Group textGroup = null;
+				
+				Text text = new Text();
+				text.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 10));
+				
+
+				text.setText(
+					matrix.get(
+						values.get(column)).get(values.get(row)));
+
+				
+				text.setX((columnInterval * ((float)column + 1)) + (columnInterval / 2.0f));
+				text.setY((rowInterval * ((float)row + 1)) + (rowInterval / 2.0f));
+				text.setFill(Color.BLACK);
+				textGroup = new Group(text);
+				
+				if (textGroup != null)
+				{
+					root.getChildren().add(textGroup);
+				}
+			}
+		}
 		
 		
 /*		
