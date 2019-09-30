@@ -45,7 +45,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 /**
- * Parse Tree visualization
+ * Matrix visualization
  * 
  * To compile and run: 
  * 		mvn clean compile javafx:run
@@ -186,7 +186,7 @@ public class App extends Application
 		
 		Scene scene = new Scene(root, sceneWidth, sceneHeight);
 
-		primaryStage.setTitle("Treeviewer");
+		primaryStage.setTitle("Matrix Viewer");
 		primaryStage.setScene(scene);
 		primaryStage.show();
 	}
