@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="matrix.PNG" width="750" title="Parse Tree Viewer">
+  <img src="matrix.PNG" width="300" title="Parse Tree Viewer">
 </p>
 
 <h1>Bond-Electron Matrix Viewer for JavaFX 12</h1>
