@@ -58,10 +58,14 @@ public class App extends Application
 	
 	private List<MatrixNode> matrixNodes = null;
 	
-	private LinkedHashMap<String, HashMap<String, String>> matrix =
-		new LinkedHashMap<String, HashMap<String, String>>();
+	private LinkedHashMap<Atom, HashMap<Atom, Float>> matrix =
+		new LinkedHashMap<Atom, HashMap<Atom, Float>>();
 	
-	private ArrayList<String> values = new ArrayList<String>();
+	private ArrayList<Atom> uniqueAtoms = new ArrayList<Atom>();
+	private Pane root = new Pane();
+	
+	float columnInterval = 0.0f; 
+	float rowInterval = 0.0f; 
 	
 	/**
 	 * 
@@ -75,17 +79,12 @@ public class App extends Application
 	/**
 	 * 
 	 */
-	@Override
-	public void start(Stage primaryStage) 
-	{		
-		createModel();
-
-		Pane root = new Pane();
-
-		float columnInterval = sceneWidth / (values.size() + 1);
-		float rowInterval = sceneHeight / (values.size() + 1);
+	public void drawGrid()
+	{
+		float columnInterval = sceneWidth / (uniqueAtoms.size() + 1);
+		float rowInterval = sceneHeight / (uniqueAtoms.size() + 1);
 		
-		for (int i = 0; i <= values.size(); i++)
+		for (int i = 0; i <= uniqueAtoms.size(); i++)
 		{
 			Group lineGroup = null;
 			
@@ -108,10 +107,10 @@ public class App extends Application
 			
 			if (i > 0)
 			{
-				text.setText(values.get(i - 1));
+				text.setText(uniqueAtoms.get(i - 1).toString());
 			}
 			
-			text.setX(columnInterval * (float)i + (columnInterval / 2.0f));
+			text.setX(columnInterval * (float)i + (columnInterval / 4.0f));
 			text.setY(rowInterval / 2.0f);
 			text.setFill(Color.BLACK);
 			textGroup = new Group(text);
@@ -122,7 +121,7 @@ public class App extends Application
 			}
 		}
 		
-		for (int i = 0; i <= values.size(); i++)
+		for (int i = 0; i <= uniqueAtoms.size(); i++)
 		{
 			Group lineGroup = null;
 			
@@ -145,10 +144,10 @@ public class App extends Application
 			
 			if (i > 0)
 			{
-				text.setText(values.get(i - 1));
+				text.setText(uniqueAtoms.get(i - 1).toString());
 			}
 			
-			text.setX(columnInterval / 2.0f);
+			text.setX(columnInterval / 4.0f);
 			text.setY(rowInterval * (float)i + (rowInterval / 2.0f));
 			text.setFill(Color.BLACK);
 			textGroup = new Group(text);
@@ -158,32 +157,64 @@ public class App extends Application
 				root.getChildren().add(textGroup);
 			}
 		}	
-		        
-		for (int column = 0; column < values.size(); column++)			
+	}
+	
+	/**
+	 * 
+	 */
+	private void drawValues()
+	{
+		for (int column = 0; column < uniqueAtoms.size(); column++)			
 		{
-			for (int row = 0; row < values.size(); row++)
-			{			
-				Group textGroup = null;
+			for (int row = 0; row < uniqueAtoms.size(); row++)
+			{
+				System.out.print(
+					uniqueAtoms.get(column) + "|" + 
+					uniqueAtoms.get(row) + "|"); 
 				
-				Text text = new Text();
-				text.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 10));
+				Float value = 
+						matrix.get(
+							uniqueAtoms.get(column)).
+							get(uniqueAtoms.get(row));
 				
-				text.setText(
-					matrix.get(
-						values.get(column)).get(values.get(row)));
-				
-				text.setX((columnInterval * ((float)column + 1)) + (columnInterval / 2.0f));
-				text.setY((rowInterval * ((float)row + 1)) + (rowInterval / 2.0f));
-				text.setFill(Color.BLACK);
-				textGroup = new Group(text);
-				
-				if (textGroup != null)
+				if (value != null)
 				{
-					root.getChildren().add(textGroup);
+					System.out.println(value);
+					
+					Group textGroup = null;
+					
+					Text text = new Text();
+					text.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 10));			
+					
+					text.setText(value.toString());			
+					
+					text.setX((columnInterval * ((float)column + 1)) + (columnInterval / 4.0f));
+					text.setY((rowInterval * ((float)row + 1)) + (rowInterval / 2.0f));
+					text.setFill(Color.BLACK);
+					textGroup = new Group(text);
+					
+					if (textGroup != null)
+					{
+						root.getChildren().add(textGroup);
+					}
 				}
+				
+				System.out.println();
 			}
-		}
+		}	
+	}
+	
+	/**
+	 * 
+	 */
+	@Override
+	public void start(Stage primaryStage) 
+	{		
+		createModel();
 		
+		drawGrid();
+		drawValues();
+		        		
 		Scene scene = new Scene(root, sceneWidth, sceneHeight);
 
 		primaryStage.setTitle("Matrix Viewer");
@@ -229,20 +260,25 @@ public class App extends Application
 
 			for (MatrixNode matrixNode : matrixNodes) 
 			{
-				System.out.println(matrixNode.toString());
-				
-				if (matrix.get(matrixNode.getColumn()) == null)
+				if (matrix.get(matrixNode.getAtom1()) == null)
 				{
-					matrix.put(matrixNode.getColumn(), new LinkedHashMap<String, String>());
+					matrix.put(matrixNode.getAtom1(), new LinkedHashMap<Atom, Float>());
 				}
 				
-				if (matrix.get(matrixNode.getRow()) == null)
+				if (matrix.get(matrixNode.getAtom2()) == null)
 				{
-					matrix.put(matrixNode.getRow(), new LinkedHashMap<String, String>());
+					matrix.put(matrixNode.getAtom2(), new LinkedHashMap<Atom, Float>());
 				}				
 				
-				matrix.get(matrixNode.getColumn()).
-					put(matrixNode.getRow(), matrixNode.getData());
+				System.out.println(
+					"Insert " + 
+					matrixNode.getAtom1() + "|" +
+					matrixNode.getAtom2() + "|" +
+					matrixNode.getBondOrder());
+				
+				matrix.get(matrixNode.getAtom1()).
+					put(matrixNode.getAtom2(), 
+					matrixNode.getBondOrder());
 			}		
 			
 	        Set set = matrix.entrySet();
@@ -251,12 +287,12 @@ public class App extends Application
 	        while (iterator.hasNext()) 
 	        {
 	            Map.Entry item = (Map.Entry) iterator.next();
-
-	            values.add((String)item.getKey());
-	            System.out.println("Key = " + item.getKey() + " Value = " + item.getValue());
+	            
+	            uniqueAtoms.add((Atom)item.getKey());
+	            System.out.println("Key = " + item.getKey());
 	        }		
 	        
-	        Collections.sort(values);
+	        Collections.sort(uniqueAtoms);
 		} 
 		catch (Exception e) 
 		{

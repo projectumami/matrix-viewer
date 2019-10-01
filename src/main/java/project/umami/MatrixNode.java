@@ -15,57 +15,116 @@ limitations under the License.
 */
 package project.umami;
 
-public class MatrixNode 
+public class MatrixNode implements Comparable<MatrixNode>
 {
-	private String row;
-	private String column;
-	private String data;
+	private Atom atom1;
+	private Atom atom2;
+	private float bondOrder;
 	
+	/**
+	 * 
+	 */
 	public MatrixNode()
 	{
 		
 	}
 	
-	public MatrixNode(String row, String column, String data) 
+	/**
+	 * 
+	 * @param atom1
+	 * @param atom2
+	 * @param bondOrder
+	 */
+	public MatrixNode(Atom atom1, Atom atom2, float bondOrder) 
 	{
-		this.row = row;
-		this.column = column;
-		this.data = data;
+		this.atom1 = atom1;
+		this.atom2 = atom2;
+		this.bondOrder = bondOrder;
 	}
 	
+	/**
+	 * 
+	 * @param atom
+	 * @return
+	 */
+	public int compareTo(MatrixNode matrixNode)
+	{
+		int retVal = 0;
+		
+		if ((this.atom1.compareTo(matrixNode.getAtom1()) == 0) &&
+			(this.atom2.compareTo(matrixNode.getAtom2()) == 0) &&
+			this.bondOrder == matrixNode.getBondOrder())
+		{
+			retVal = 0;
+		}
+		else
+		{
+			retVal = -1;
+		}
+		
+		return retVal;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public Atom getAtom1() 
+	{
+		return atom1;
+	}
+
+	/**
+	 * 
+	 * @param atom1
+	 */
+	public void setAtom1(Atom atom1) 
+	{
+		this.atom1 = atom1;
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public Atom getAtom2() 
+	{
+		return atom2;
+	}
+
+	/**
+	 * 
+	 * @param atom2
+	 */
+	public void setAtom2(Atom atom2) 
+	{
+		this.atom2 = atom2;
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public float getBondOrder() 
+	{
+		return bondOrder;
+	}
+
+	/**
+	 * 
+	 * @param bondOrder
+	 */
+	public void setBondOrder(float bondOrder) 
+	{
+		this.bondOrder = bondOrder;
+	}
+	
+	/**
+	 * 
+	 */
 	@Override
 	public String toString()
 	{
-		return "(" + this.row + "," + this.column + "," + this.data + ")";
-	}
-
-	public String getRow() 
-	{
-		return row;
-	}
-
-	public void setRow(String row) 
-	{
-		this.row = row;
-	}
-
-	public String getColumn() 
-	{
-		return column;
-	}
-
-	public void setColumn(String column) 
-	{
-		this.column = column;
-	}
-
-	public String getData() 
-	{
-		return data;
-	}
-
-	public void setData(String data) 
-	{
-		this.data = data;
-	}
+		return "(" + this.atom1 + "," + this.atom2 + "," + this.bondOrder + ")";
+	}	
 }
