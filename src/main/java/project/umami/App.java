@@ -164,13 +164,7 @@ public class App extends Application
 		for (int column = 0; column < uniqueAtoms.size(); column++)			
 		{
 			for (int row = 0; row < uniqueAtoms.size(); row++)
-			{
-				System.out.print(
-					column + "|" +
-					row + "|" +
-					uniqueAtoms.get(column) + "|" + 
-					uniqueAtoms.get(row) + "|"); 
-				
+			{ 
 				Float value = 
 						matrix.get(
 							uniqueAtoms.get(column)).
@@ -178,12 +172,19 @@ public class App extends Application
 				
 				if (value != null)
 				{
-					System.out.println(value);
-					
 					Group textGroup = null;
 					
 					Text text = new Text();
-					text.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 10));			
+					
+					// Differentiate the bonds from the electrons
+					if (column == row)
+					{
+						text.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 10));						
+					}
+					else
+					{
+						text.setFont(Font.font("verdana", FontWeight.NORMAL, FontPosture.REGULAR, 10));
+					}
 					
 					text.setText(value.toString());								
 					
@@ -196,9 +197,7 @@ public class App extends Application
 					{
 						root.getChildren().add(textGroup);
 					}
-				}
-				
-				System.out.println();
+				}		
 			}
 		}	
 	}
@@ -261,47 +260,26 @@ public class App extends Application
 			{
 				if (matrix.get(matrixNode.getAtom1()) == null)
 				{
-					System.out.println("Create new LinkedHashMap" + matrixNode.getAtom1().toString());
 					matrix.put(matrixNode.getAtom1(), new LinkedHashMap<Atom, Float>());
 				}
 				
 				if (matrix.get(matrixNode.getAtom2()) == null)
-				{
-					System.out.println("Create new LinkedHashMap" + matrixNode.getAtom2().toString());					
+				{				
 					matrix.put(matrixNode.getAtom2(), new LinkedHashMap<Atom, Float>());
-				}				
-				
-				System.out.println(
-					"Insert " + 
-					matrixNode.getAtom1() + "|" +
-					matrixNode.getAtom2() + "|" +
-					matrixNode.getBondOrder());
+				}							
 				
 				matrix.get(
 					matrixNode.getAtom1()).
 					put(matrixNode.getAtom2(), 
 					matrixNode.getBondOrder());
-			}
-			
-/*			
-			System.out.println("getAtom()" + matrix.get(matrixNodes.get(0).getAtom1()));
-			
-			matrix.put(matrixNodes.get(0).getAtom1(), new LinkedHashMap<Atom, Float>());
-			matrix.put(matrixNodes.get(0).getAtom1(), new LinkedHashMap<Atom, Float>());
-			matrix.put(matrixNodes.get(0).getAtom1(), new LinkedHashMap<Atom, Float>());	
-			
-			System.out.println("getAtom()" + matrix.get(matrixNodes.get(0).getAtom1()));
-*/			
+			}		
 			
 	        Set set = matrix.entrySet();
 	        Iterator iterator = set.iterator();
-
-	        System.out.println("Matrix EntrySet: " + matrix.entrySet().size());
 	        
 	        for (Map.Entry<Atom, LinkedHashMap<Atom, Float>> entry : matrix.entrySet())
 	        {   
 	            uniqueAtoms.add((Atom)entry.getKey());
-//	            System.out.println("Key = " + entry.getKey());
 	        }		
 	        
 	        Collections.sort(uniqueAtoms);
