@@ -42,6 +42,31 @@ public class MatrixNode implements Comparable<MatrixNode>
 		this.bondOrder = bondOrder;
 	}
 	
+	@Override
+	public boolean equals(Object o) 
+	{
+		if (this == o)
+		{
+			return true;			
+		}
+		
+		if (o == null || getClass() != o.getClass()) 
+		{
+			return false;
+		}
+		
+		MatrixNode matrixNode = (MatrixNode)o;
+		
+		if ((this.atom1.compareTo(matrixNode.getAtom1()) == 0) &&
+				(this.atom2.compareTo(matrixNode.getAtom2()) == 0) &&
+				this.bondOrder == matrixNode.getBondOrder())
+		{
+			return true;
+		}
+
+		return false;
+	}
+	
 	/**
 	 * 
 	 * @param atom
@@ -54,6 +79,24 @@ public class MatrixNode implements Comparable<MatrixNode>
 		if ((this.atom1.compareTo(matrixNode.getAtom1()) == 0) &&
 			(this.atom2.compareTo(matrixNode.getAtom2()) == 0) &&
 			this.bondOrder == matrixNode.getBondOrder())
+		{
+			retVal = 0;
+		}
+		else
+		{
+			retVal = -1;
+		}
+		
+		return retVal;
+	}
+	
+	public int compare(MatrixNode matrixNode1, MatrixNode matrixNode2)
+	{
+		int retVal = 0;
+		
+		if ((matrixNode1.atom1.compareTo(matrixNode2.getAtom1()) == 0) &&
+			(matrixNode1.atom2.compareTo(matrixNode2.getAtom2()) == 0) &&
+			matrixNode1.bondOrder == matrixNode2.getBondOrder())
 		{
 			retVal = 0;
 		}

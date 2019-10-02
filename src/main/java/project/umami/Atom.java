@@ -15,7 +15,9 @@ limitations under the License.
 */
 package project.umami;
 
-public class Atom implements Comparable<Atom>
+import java.util.Comparator;
+
+public class Atom implements Comparator<Atom>, Comparable<Atom>
 {
 	private int id;
 	private String element;
@@ -39,10 +41,31 @@ public class Atom implements Comparable<Atom>
 		this.element = element;
 	}
 	
-	/**
-	 * 
-	 */
-	public int compareTo(Atom atom)
+	@Override
+	public boolean equals(Object o) 
+	{
+		if (this == o)
+		{
+			return true;			
+		}
+		
+		if (o == null || getClass() != o.getClass()) 
+		{
+			return false;
+		}
+		
+		Atom atom = (Atom)o;
+		
+		if ((this.id == atom.id) && (this.element.compareTo(atom.element) == 0))
+		{
+			return true;
+		}
+
+		return false;
+	}
+	
+	@Override
+	public int compareTo(Atom atom) 
 	{
 		int retVal = 0;
 		
@@ -64,6 +87,42 @@ public class Atom implements Comparable<Atom>
 		
 		return retVal;
 	}
+	
+	/**
+	 * 
+	 */
+	public int hashCode()
+	{
+		return this.id;
+	}
+	
+	/**
+	 * 
+	 */
+	@Override
+	public int compare(Atom atom1, Atom atom2)
+	{
+		int retVal = 0;
+		
+		if ((atom1.id == atom2.id) && (atom1.element.compareTo(atom2.element) == 0))
+		{
+			retVal = 0;
+		}
+		else
+		{
+			if (atom1.id == atom2.id) 
+			{
+				retVal = atom1.element.compareTo(atom2.element);
+			}
+			else
+			{
+				retVal = atom1.id > atom2.id ? 1 : -1;
+			}
+		}
+		
+		return retVal;
+	}
+	
 	/**
 	 * 
 	 * @return

@@ -58,8 +58,8 @@ public class App extends Application
 	
 	private List<MatrixNode> matrixNodes = null;
 	
-	private LinkedHashMap<Atom, HashMap<Atom, Float>> matrix =
-		new LinkedHashMap<Atom, HashMap<Atom, Float>>();
+	private LinkedHashMap<Atom, LinkedHashMap<Atom, Float>> matrix =
+		new LinkedHashMap<Atom, LinkedHashMap<Atom, Float>>();
 	
 	private ArrayList<Atom> uniqueAtoms = new ArrayList<Atom>();
 	private Pane root = new Pane();
@@ -80,10 +80,7 @@ public class App extends Application
 	 * 
 	 */
 	public void drawGrid()
-	{
-		float columnInterval = sceneWidth / (uniqueAtoms.size() + 1);
-		float rowInterval = sceneHeight / (uniqueAtoms.size() + 1);
-		
+	{		
 		for (int i = 0; i <= uniqueAtoms.size(); i++)
 		{
 			Group lineGroup = null;
@@ -169,6 +166,8 @@ public class App extends Application
 			for (int row = 0; row < uniqueAtoms.size(); row++)
 			{
 				System.out.print(
+					column + "|" +
+					row + "|" +
 					uniqueAtoms.get(column) + "|" + 
 					uniqueAtoms.get(row) + "|"); 
 				
@@ -186,9 +185,9 @@ public class App extends Application
 					Text text = new Text();
 					text.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 10));			
 					
-					text.setText(value.toString());			
+					text.setText(value.toString());								
 					
-					text.setX((columnInterval * ((float)column + 1)) + (columnInterval / 4.0f));
+					text.setX((columnInterval * ((float)column + 1)) + (columnInterval / 2.0f));
 					text.setY((rowInterval * ((float)row + 1)) + (rowInterval / 2.0f));
 					text.setFill(Color.BLACK);
 					textGroup = new Group(text);
@@ -213,7 +212,7 @@ public class App extends Application
 		createModel();
 		
 		drawGrid();
-		drawValues();
+		drawValues();	
 		        		
 		Scene scene = new Scene(root, sceneWidth, sceneHeight);
 
@@ -257,16 +256,18 @@ public class App extends Application
 						
 			matrixNodes = Arrays.asList(mapper.readValue(fileInputStream, MatrixNode[].class));
 			fileInputStream.close();
-
+			
 			for (MatrixNode matrixNode : matrixNodes) 
 			{
 				if (matrix.get(matrixNode.getAtom1()) == null)
 				{
+					System.out.println("Create new LinkedHashMap" + matrixNode.getAtom1().toString());
 					matrix.put(matrixNode.getAtom1(), new LinkedHashMap<Atom, Float>());
 				}
 				
 				if (matrix.get(matrixNode.getAtom2()) == null)
 				{
+					System.out.println("Create new LinkedHashMap" + matrixNode.getAtom2().toString());					
 					matrix.put(matrixNode.getAtom2(), new LinkedHashMap<Atom, Float>());
 				}				
 				
@@ -276,20 +277,31 @@ public class App extends Application
 					matrixNode.getAtom2() + "|" +
 					matrixNode.getBondOrder());
 				
-				matrix.get(matrixNode.getAtom1()).
+				matrix.get(
+					matrixNode.getAtom1()).
 					put(matrixNode.getAtom2(), 
 					matrixNode.getBondOrder());
-			}		
+			}
+			
+/*			
+			System.out.println("getAtom()" + matrix.get(matrixNodes.get(0).getAtom1()));
+			
+			matrix.put(matrixNodes.get(0).getAtom1(), new LinkedHashMap<Atom, Float>());
+			matrix.put(matrixNodes.get(0).getAtom1(), new LinkedHashMap<Atom, Float>());
+			matrix.put(matrixNodes.get(0).getAtom1(), new LinkedHashMap<Atom, Float>());	
+			
+			System.out.println("getAtom()" + matrix.get(matrixNodes.get(0).getAtom1()));
+*/			
 			
 	        Set set = matrix.entrySet();
 	        Iterator iterator = set.iterator();
 
-	        while (iterator.hasNext()) 
-	        {
-	            Map.Entry item = (Map.Entry) iterator.next();
-	            
-	            uniqueAtoms.add((Atom)item.getKey());
-	            System.out.println("Key = " + item.getKey());
+	        System.out.println("Matrix EntrySet: " + matrix.entrySet().size());
+	        
+	        for (Map.Entry<Atom, LinkedHashMap<Atom, Float>> entry : matrix.entrySet())
+	        {   
+	            uniqueAtoms.add((Atom)entry.getKey());
+//	            System.out.println("Key = " + entry.getKey());
 	        }		
 	        
 	        Collections.sort(uniqueAtoms);
@@ -298,5 +310,8 @@ public class App extends Application
 		{
 			e.printStackTrace();
 		}	
+		
+		columnInterval = sceneWidth / (uniqueAtoms.size() + 1);
+		rowInterval = sceneHeight / (uniqueAtoms.size() + 1);
 	}		
 }
