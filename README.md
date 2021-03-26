@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="matrix.PNG" width="300" title="Parse Tree Viewer">
+  <img src="matrix.PNG" width="300" title="Matrix Viewer">
 </p>
 
 <h1>Bond-Electron Matrix Viewer for JavaFX 12</h1>
@@ -22,3 +22,6 @@ For more information about Project Umami, visit http://twitter.com/ProjectUmami
 
 <h2>Contact</h2>
 For more information, contact inquiries@orchidwarestudios.com or call 619-665-1703.
+
+<h2>Contributors</h2>
+Project Umami's Matrix Viewer is an open-source, LGPL project and is seeking contributors from the scientific and engineering communities. If interested, please contact inquiries@orchidwarestudios.com
